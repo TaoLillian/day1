@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+</head>
+<body>
+<div id="app">
+<!--在数据加载到页面之前，首先会将数据通过管道口传输到过滤器中，将数据更改后输出到页面-->
+    <p>{{ msg| msgfilter1('快乐') | magfilter2 }}</p>
+</div>
+
+
+<script>
+    //过滤器的调用方法，第一个是要被过滤的参数，| 是一个管道口，将管道口前面的数据传入后面的过滤器
+    // {{ data | 过滤器的名称}}
+    //这是全局过滤器，过滤器改变的是页面的数据，在内存里的数据没有改变
+   //vue.filter('过滤器的名称',function(data){})
+    //过滤器的第一个参数应该是过滤器的名称，第二个参数是要进行的操作，函数的第一个参数应该是要被过滤的数据，后面可以传递有多个参数
+
+    Vue.filter('msgfilter1',function(msg,arg){
+       return msg.replace(/好好/g,arg)
+    })
+    Vue.filter('magfilter2',function(msg){
+        return msg+'hahah'
+    })
+
+
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            msg:'今天真是一个好好天气呀，你一定要好好的去学校，好好的考试，好好的回家。'
+        },
+        mesthods:{}
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="button" value="浪起来" @click="lang">
+    <input type="button" value="稳住了" @click="wen">
+    <h4>{{ msg }}</h4>
+</div>
+<script>
+    //在vm中，vue实例会自动监听data属性，将更改后的data值应用到元素中
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '稳住，我们能赢。',
+            intervalid:null
+        },
+        methods: {
+            lang() {
+                //console.log(this.msg)
+                //var _this = this
+
+                if(this.intervalid!=null) return
+                this.intervalid = setInterval( () => {
+                    var start = this.msg.substring(0,1)
+                    var end = this.msg.substring(1)
+                    this.msg = end + start
+                },200)
+            },
+
+
+            wen() {
+                clearInterval(this.intervalid)
+                this.intervalid = null ;
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

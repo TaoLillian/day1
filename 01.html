@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [v-cloak]{
+            display: none;
+
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- 用户所看到的界面V-->
+<div id="app">
+    <!-- v-cloak解决插值闪烁-->
+    <p v-cloak>====={{mes}}-----</p>   <!--{{ }} data属性下所有的属性都可以直接引用,data数据部分只会代替占位符部分-->
+    <h1 v-text="mes">*****</h1>   <!--v-text没有插值闪烁的问题,data数据部分会覆盖文本内容-->
+    <div>{{mes2}}</div>
+    <div v-html="mes2"></div>
+<!--v-bind：是vue提供绑定的一个属性,可以简写为一个英文的冒号：。-->
+    <!--v-on属性绑定事件，可以缩写为@-->
+    <input type="button" id="bt1" value="button" v-bind:title="mes2 + '111'" >
+    <input type="button" value="按钮" @click="show">
+
+</div>
+
+
+<script src="./ilb/vue.js"></script>
+
+
+<script>
+    // vm 是V与M之间的调度者
+    var vm = new Vue({
+        el:'#app',     //表示vue实例对象要控制页面上哪一个区域
+        data:{         //data属性中存放el区域的数据，data是mvvm中的m,专门用来保存界面里的数据
+            mes:'123',
+            mes2:'<h1>hahaha</h1>',
+            mytitle:'12334'
+        },
+        methods:{
+            show:function () {
+                alert("hello")
+            }
+        }
+    })
+
+
+    //document.getElementById("bt1").onclick=function () { alert("hello") }
+
+</script>
+</body>
+</html>

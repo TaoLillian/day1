@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+    <link rel="stylesheet">
+<style>
+    .table{
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+    <div align="center">
+        <label>
+            id: <input type="text" v-model="id" v-color="'blue'">
+        </label>
+        <label>                              <!--//keyup后面可以跟码值 比f2是113 @keyup.113='-->
+            name: <input type="text" v-model="name" @keyup.enter="add" v-focus> <!-- v-focus指令，但是需要自己定义-->
+        </label>
+        <label>
+            <input type="button" value="添加" @click="add">
+        </label>
+        <label>
+            请输入搜索关键词<input type="text" v-model="keyword" >
+        </label>
+    </div>
+
+    <table align="center" class="table">
+        <thead>
+        <tr>
+            <td width="250px">id</td>
+            <td width="250px">name</td>
+            <td width="250px">ctime</td>
+            <td width="250px">operation</td>
+        </tr>
+        </thead>
+        <tr v-for="item in search(keyword)" :key="item.id">
+            <td width="250px">{{ item.id }}</td>
+            <td width="250px">{{ item.name }}</td>
+            <td width="250px">{{ item.ctime | timefilter  }}</td>
+            <td width="250px"><a href="#" @click.prevent="del(item.id)"> 删除</a></td>
+        </tr>
+
+
+    </table>
+    </div>
+<script>
+    //定义全局指令，参数一，指令名称，在定义时不需要加上 v- 前缀，再调用时得加上前缀 v-focus 使用
+    //参数二，是一个对象，有一些指令相关得钩子函数，在特定阶段，执行相关操作
+    Vue.directive('focus',{
+        //在每个函数中，第一个参数一定是el，表示要被绑定了指令得那个元素，这个el参数是一个原声得对象，（DOM对象）
+        //当指令绑定到元素时，指令会立即执行，并执行一次，
+        bind:function(el){
+            el.focus();
+        },
+        //元素插入到DOM中时会执行得函数，只会执行一次
+        inserted:function(el){
+            el.focus();
+        },
+        //当主键(Node)更新得时候，可能会触发多次
+        updated:function(){}
+    })
+    Vue.filter('timefilter',function(time){
+        //var time = new Data(timestr)
+        var y = time.getFullYear()
+        var m = time.getMonth() + 1
+        var d = time.getDate()
+        var hh = time.getHours()
+        var mm = time.getMinutes()
+        var ss = time.getSeconds()
+        // return y+'-'+ m + '-' + d + '-' + hh +'-'+mm +'-'+ ss
+        return `${y}-${m}-${d}  ${hh}:${mm}:${ss}`
+
+    })
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            keyword:'',
+            list: [
+                {id: 1, name: '奔驰',ctime:new Date()},
+                {id: 2, name: '宝马',ctime:new Date()}
+            ]
+        },
+        methods: {
+            add() {
+                var car = {id: this.id, name: this.name, ctime:new Date()}
+                this.list.push(car)
+                this.id = ''
+                this.name = ''
+            },
+            //根据关键字搜索
+            search(keyword){
+                return this.list.filter(item => {
+                    // if(item.name.indexof(keyword)!= -1){newlist.push(item)} return newlist
+
+                    if(item.name.includes(keyword)) //如果包含则返回true，不包含则返回false
+                        return item
+
+                })
+            },
+            del(id) {
+
+                this.list.some((item, i) => {
+                    if(item.id === id)
+                {
+                    this.list.splice(i, 1);
+                    return true;
+                }
+                })
+
+            }
+        },
+        //私有的过滤器，只能针对特定的作用区域，如果有全局和私有过滤器，采用就近原则。
+        filters:{
+            timefilter:function(time){
+                var y = time.getFullYear()
+                //padStart(长度，用来填充的符号)，是用来填充长度
+                var m = (time.getMonth() + 1).toString().padStart(2,'0')
+                var d = time.getDate().toString().padStart(2,'0')
+                var hh = time.getHours().toString().padStart(2,'0')
+                var mm = time.getMinutes().toString().padStart(2,'0')
+                var ss = time.getSeconds().toString().padStart(2,'0')
+                // return y+'-'+ m + '-' + d + '-' + hh +'-'+mm +'-'+ ss
+                return `${y}-${m}-${d}  ${hh}-${mm}-${ss}`
+            }
+        },
+        //定义的私有指令，当全局和私有指令名字相同时，采用就近原则，采用私有指令
+        directives:{
+            //如果是样式采用bind，如果是行为，就采用inserted
+            //将bind 和 inserted 合并简写为 名字：function(el, ){}
+            'color':function(el,binding){
+                el.style.color=binding.value
+            },
+            'focus':{
+                inserted:function(el){
+                    el.focus()
+                    console.log('内部得focus')
+                }
+            },
+            'size':function(el,binding){
+                el.style.fontsize=parseInt(binding.value) + 'px'
+            }
+        }
+    })
+</script>
+</body>
+</html>

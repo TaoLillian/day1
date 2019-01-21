@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="ilb/vue.js"></script>
+    <style>
+        .inner {
+            height: 150px;
+            background-color: bisque;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+
+    <div class="inner" @click="divHelder">
+        <!--使用 .stop 组织冒泡行为（里面往外依次执行）-->
+        <input type="button" value="盘它" @click.stop="butHelder">
+    </div>
+
+    <!--使用 .prevent 阻止默认事件的发生，在这里阻止页面跳转-->
+    <a href="http://www.baidu.com" @click.prevent="link">我要去百度</a>
+
+    <!--.capture用来捕获事件，捕获事件就是从外往里执行-->
+    <div class="inner" @click.capture="divHelder">
+        <input type="button" value="盘它" @click="butHelder">
+    </div>
+    <br/>
+    <!--.self-->
+    <div class="inner" @click.self="divHelder">
+        <input type="button" value="盘它" @click="butHelder">
+    </div>
+
+    <!--使用 .once 使事件只发生一次，-->
+    <a href="http://www.baidu.com" @click.prevent.once="link">我要去百度</a>
+
+</div>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            butHelder() {
+                console.log("button事件")
+            },
+            divHelder() {
+                console.log("div事件")
+            },
+            link(){
+                console.log("百度跳转")
+            }
+
+        }
+    })
+</script>
+
+</body>
+</html>

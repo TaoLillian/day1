@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+    <link rel="stylesheet">
+
+</head>
+<body>
+<div id="app">
+    <div align="center">
+        <label>
+            id:<input type="text" v-model="id">
+        </label>
+        <label>
+            name: <input type="text" v-model="name">
+        </label>
+        <label>
+            <input type="button" value="添加" @click="add">
+        </label>
+        <label>
+            请输入搜索关键词<input type="text" v-model="keyword">
+        </label>
+    </div>
+
+    <table align="center">
+        <thead>
+        <tr>
+            <td width="250px">id</td>
+            <td width="250px">name</td>
+            <td width="250px">ctime</td>
+            <td width="250px">operation</td>
+        </tr>
+        </thead>
+        <tr v-for="item in search(keyword)" :key="item.id">
+            <td width="250px">{{ item.id }}</td>
+            <td width="250px">{{ item.name }}</td>
+            <td width="250px">{{ item.ctime }}</td>
+            <td width="250px"><a href="#" @click.prevent="del(item.id)"> 删除</a></td>
+        </tr>
+
+
+    </table>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            id: '',
+            name: '',
+            keyword:'',
+
+
+            list: [
+                {id: 1, name: '奔驰',ctime:new Date()},
+                {id: 2, name: '宝马',ctime:new Date()}
+            ]
+        },
+        methods: {
+            add() {
+                var car = {id: this.id, name: this.name, ctime:new Date()}
+                this.list.push(car)
+                this.id = ''
+                this.name = ''
+            },
+            //根据关键字搜索
+            search(keyword){
+                // var newlist = []
+                // this.list.forEach(item => {
+                //     if(item.name.indexOf(keyword) != -1){ //当返回为-1时则是不包含
+                //         newlist.push(item)
+                // }
+                // })
+                // return newlist
+                // some 在循环的过程中可以通过返回值true来终止循环
+                // filter  一种过滤器
+                // foreach  简单的不能终止的循环
+                // findindexof 返回元素所在索引
+                // var newlist = []
+                return this.list.filter(item => {
+                    // if(item.name.indexof(keyword)!= -1){newlist.push(item)} return newlist
+
+                    if(item.name.includes(keyword)) //如果包含则返回true，不包含则返回false
+                        return item
+
+                })
+            },
+            del(id) {
+
+                this.list.some((item, i) => {
+                    if(item.id === id)
+                {
+                    this.list.splice(i, 1);
+                    return true;
+                }
+                })
+
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+    <style>
+        .pink{
+            color: pink;
+        }
+        .italic{
+            font-style: italic;
+        }
+        .heavy {
+            font-size: 100px;
+        }
+        .active{
+            letter-spacing: 0.5em;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--把类作为字符串数组传入  ['pink' ] -->
+    <!--<p v-bind:class="['heavy','pink']">hahahahaha</p>-->
+
+    <!--在数组中使用三元表达式 [flag?'pink':'italic'] -->
+    <!--<p v-bind:class="[flag?'pink':'italic']">hahahahaha</p>-->
+
+    <!--把类作为一个对象传入 {} -->
+    <!--<p v-bind:class="[{heavy:flag}]">hahahahaha</p>-->
+
+    <!-- 直接使用对象  {pink:true}  -->
+    <!--<p v-bind:class="{pink:true ,active:true }">hahahahaha</p>-->
+
+    <p v-bind:class="obt">hahahahaha</p>
+</div>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            flag:true,
+            obt:{pink:true ,active:false,heavy:true }
+        },
+        methods:{}
+    })
+</script>
+
+</body>
+</html>

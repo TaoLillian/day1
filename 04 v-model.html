@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="./ilb/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h4>{{ msg }}</h4>
+    <!-- v-bind 只能实现m到v的数据绑定，不能实现数据的双向的绑定-->
+    <!-- v-model 实现双向数据绑定，且只能作用在表单元素中，
+    input checkbox
+    -->
+    <input type="text" :value="msg" style="width:100%;">
+    <input type="text" v-model="msg" style="width:100%;">
+</div>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            msg:"我就是爱学习，写代码！"
+        },
+        methods:{
+
+        }
+    })
+</script>
+</body>
+</html>
